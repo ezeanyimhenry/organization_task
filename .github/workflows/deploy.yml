@@ -31,7 +31,7 @@ jobs:
           touch database/database.sqlite
 
       - name: Database Migration
-        run: php artisan migrate:fresh --seed --force
+        run: php artisan migrate:fresh
 
       - name: Clear Cache
         run: php artisan cache:clear
