@@ -36,6 +36,7 @@ jobs:
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=/home/runner/work/organization_task/organization_task/database/database.sqlite" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
 
       - name: Run Migrations
         run: php artisan migrate:fresh
