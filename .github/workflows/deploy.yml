@@ -22,16 +22,23 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
       - name: Create SQLite Database File
         run: |
           mkdir -p database
           touch database/database.sqlite
 
-      - name: Database Migration
-        run: php artisan migrate:fresh
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Set Environment Variables
+        run: |
+          echo "APP_ENV=testing" >> .env
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=/home/runner/work/organization_task/organization_task/database/database.sqlite" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+
+      - name: Run Migrations
+        run: php artisan migrate:fresh --seed
 
       - name: Clear Cache
         run: php artisan cache:clear
