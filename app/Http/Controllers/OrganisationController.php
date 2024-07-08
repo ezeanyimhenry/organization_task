@@ -101,6 +101,14 @@ class OrganisationController extends Controller
                 'message' => 'Organisation not found',
             ], 404);
         }
+        
+        // Check if the user is already a member of the organisation
+    if ($organisation->users()->where('user_id', $user->id)->exists()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'User is already a member of this organisation',
+        ], 400);
+    }
 
         // Attach user to organisation
         $user = User::find($request->userId);
